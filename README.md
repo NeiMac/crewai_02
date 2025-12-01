@@ -63,7 +63,17 @@ pip install -r requirements.txt
 ```
 
 4. Configure as variáveis de ambiente:
-Crie um arquivo `.env` com as suas chaves de API necessárias para os agentes (ex: LLM API keys).
+Crie um arquivo `.env` com as suas chaves de API necessárias para os agentes:
+
+```
+# Para usar OpenAI
+OPENAI_API_KEY=sua_chave_openai_aqui
+
+# Para usar Anthropic
+ANTHROPIC_API_KEY=sua_chave_anthropic_aqui
+```
+
+Se ambas as chaves estiverem configuradas, o `PROVIDER` definido no notebook determinará qual será utilizado.
 
 ### Execução
 
@@ -99,6 +109,34 @@ O projeto gera automaticamente:
 
 ## 🔧 Personalização
 
+### Selecionar Provedor de IA
+
+Na primeira célula do notebook, você pode escolher qual provedor usar:
+
+```python
+# Escolha qual provedor usar: "openai" ou "anthropic"
+PROVIDER = "openai"  # Mude para "anthropic" se desejar
+
+# Modelos disponíveis
+MODELS = {
+    "openai": "gpt-4o",  # Modelo mais recente (recomendado)
+    "anthropic": "claude-3-5-sonnet-20241022"
+}
+```
+
+**Modelos Disponíveis:**
+
+**OpenAI:**
+- `gpt-4o` - Mais recente e versátil (padrão)
+- `gpt-3.5-turbo` - Mais barato, menos capaz
+- `gpt-4-turbo` - Alternativa otimizada
+
+**Anthropic:**
+- `claude-3-5-sonnet-20241022` - Modelo mais recente
+- `claude-3-opus-20240229` - Mais capaz mas mais lento
+
+Todos os três agentes usarão automaticamente o modelo configurado.
+
 ### Alterar o Setor Analisado
 
 Para analisar um setor diferente, modifique a chamada:
@@ -114,6 +152,7 @@ novo_agente = Agent(
     role="Seu Role",
     goal="Seu Objetivo",
     backstory="Sua Descrição",
+    model=MODEL,  # Usa o modelo configurado
     allow_delegation=False,
     verbose=True
 )
